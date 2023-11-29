@@ -9,7 +9,7 @@ jobs:
   comment-with-action:
     runs-on: ubuntu-latest
     steps:
-      - name: "dump context"
+      - name: "dump github context"
         run: echo '${{ toJSON(github.event) }}' | jq
         shell: bash
 
@@ -27,3 +27,18 @@ jobs:
             [1]: https://github.com/peter-evans/create-or-update-comment
           reactions: rocket  
 
+  comment-with-api:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Create comment with API
+          run: |
+             gh api -X Post \
+                https://api.github.com/repo/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER} \
+                -f body='
+                Comment from the API call not Action
+                '  
+          env:
+            GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}      
+            ORGANIZATION: ${{github.event.organization.login}}
+            REPOSITORY: ${{ github.event.repository.name}}  
+            ISSUE_NUMBER: ${{ github.event.issue.number}}
