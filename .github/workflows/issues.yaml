@@ -33,7 +33,7 @@ jobs:
         - name: Create comment with API
           run: |
              gh api -X Post \
-                https://api.github.com/repo/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER} \
+                https://api.github.com/repo/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comment \
                 -f body='
                 Comment from the API call not Action
                 '  
